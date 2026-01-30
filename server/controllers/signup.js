@@ -2,10 +2,8 @@ import User from '../models/user.js'
 import hash from '../utils/hash.js'
 
 const signup = async (req, res) => {
+    
     const { username, email, password } = req.body;
-    console.log({
-        username, email, password
-    })
 
     try {
         if (!username || !email || !password) {
