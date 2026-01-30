@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,11 +18,13 @@ connect(mongoUrl);
 const app = express();
 app.use(express.json());
 app.use(cors({
-    "origin": "*",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    "preflightContinue": false,
-    "optionsSuccessStatus": 204
+    origin: "http://localhost:5173", //  React app
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 
 // Personal Routes
