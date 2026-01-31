@@ -6,13 +6,19 @@ dotenv.config();
 const secret = process.env.JWT_SECRET;
 
 const createToken = (req, res, next) => {
+
+    const { userId, email } = req.body;
+
     try {
-        if (!req.body.email) {
+        if (!email) {
             return res.status(400).json({ message: "Email is required" });
         }
 
         const token = jwt.sign(
-            { email: req.body.email },
+            {
+                email: email,
+                userId: userId
+            },
             secret,
             { expiresIn: "7d" }
         );
