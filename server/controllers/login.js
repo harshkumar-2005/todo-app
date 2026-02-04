@@ -1,9 +1,13 @@
 import User from '../models/user.js';
 import verified from '../utils/verify.js';
-import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
+const secret = process.env.JWT_SECRET;
 
 const login = async (req, res) => {
-    const { email, password, token } = req.body; // token is set by the middleware 
+    const { email, password } = req.body;
 
     try {
         const found = await User.findOne({ email });
@@ -24,11 +28,21 @@ const login = async (req, res) => {
 
         }
 
+        // Create token
+        const token = jwt.sign(
+            {
+                email: found.email,
+                userId: found._id
+            },
+            secret,
+            { expiresIn: "7d" }
+        );
+
         // Attach token securely
         res.cookie('token', token, {
             httpOnly: true,
             sameSite: 'strict',
-            secure: true,
+            secure: false, // Set to false for development (localhost)
             path: '/'
         });
 
