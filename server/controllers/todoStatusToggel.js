@@ -29,7 +29,7 @@ const toggleStatus = async (req, res) => {
         });
     }
 
-    todo.completed = !todo.completed;
+    todo.completed = !todo.completed; // Negation of the completed parameter.
     await todo.save();
 
     return res.status(200).json({
