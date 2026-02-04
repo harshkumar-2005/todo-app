@@ -14,13 +14,6 @@ const getAllTodo = async (req, res) => {
         const allTodo = await Todo.find({ user: userId })
             .select("_id title description completed");
 
-        if (allTodo.length === 0) {
-            return res.status(404).json({
-                success: true,
-                message: "No Todo is present."
-            });
-        }
-
         res.status(200).json({
             success: true,
             todos: allTodo
