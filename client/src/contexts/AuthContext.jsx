@@ -14,9 +14,12 @@ export const AuthProvider = ({ children }) => {
       if (storedUser) {
         try {
           // Verify the token by making a request to a protected endpoint
-          await axios.get("http://localhost:3000/v1/api/todo/get/all/todos", {
-            withCredentials: true,
-          });
+          await axios.get(
+            "https://todo-app-0iqg.onrender.com/v1/api/todo/get/all/todos",
+            {
+              withCredentials: true,
+            },
+          );
           setUser(JSON.parse(storedUser));
         } catch (error) {
           // Token invalid, clear storage
@@ -31,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/v1/api/todo/user/login",
+        "https://todo-app-0iqg.onrender.com/v1/api/todo/user/login",
         { email, password },
         { withCredentials: true },
       );
@@ -46,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (username, email, password) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/v1/api/todo/user/signup",
+        "https://todo-app-0iqg.onrender.com/v1/api/todo/user/signup",
         { username, email, password },
       );
       return res.data;
@@ -58,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:3000/v1/api/todo/user/logout",
+        "https://todo-app-0iqg.onrender.com/v1/api/todo/user/logout",
         {},
         { withCredentials: true },
       );

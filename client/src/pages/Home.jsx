@@ -21,7 +21,7 @@ const Home = () => {
   const fetchTodos = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/v1/api/todo/get/all/todos",
+        "https://todo-app-0iqg.onrender.com/v1/api/todo/get/all/todos",
         { withCredentials: true },
       );
       setTodos(res.data.todos);
@@ -33,7 +33,7 @@ const Home = () => {
   const addTodo = async (title, description) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/v1/api/todo/create",
+        "https://todo-app-0iqg.onrender.com/v1/api/todo/create",
         { title, description },
         { withCredentials: true },
       );
@@ -46,7 +46,7 @@ const Home = () => {
   const toggleTodo = async (id) => {
     try {
       await axios.patch(
-        `http://localhost:3000/v1/api/todo/toggle/status/${id}`,
+        `https://todo-app-0iqg.onrender.com/v1/api/todo/toggle/status/${id}`,
         {},
         { withCredentials: true },
       );
@@ -62,9 +62,12 @@ const Home = () => {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/v1/api/todo/${id}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `https://todo-app-0iqg.onrender.com/v1/api/todo/${id}`,
+        {
+          withCredentials: true,
+        },
+      );
       setTodos(todos.filter((todo) => todo._id !== id));
     } catch (error) {
       console.error("Failed to delete todo", error);
