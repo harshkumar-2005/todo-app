@@ -2,7 +2,8 @@ import todo from '../models/todo.js';
 
 const deleteTodo = async (req, res) => {
     try {
-        const todoId = req.params.todoId;
+        const todoId = req.params.id;
+        const { userId } = req.user;
 
         if (!todoId) {
             return res.status(400).json({
@@ -11,19 +12,16 @@ const deleteTodo = async (req, res) => {
             });
         }
 
-        // Find todo first
-        const existingTodo = await todo.findById(todoId);
+        // Find and delete todo in one operation, ensuring it belongs to the user
+        const deletedTodo = await todo.findOneAndDelete({ _id: todoId, user: userId });
 
-        // Check if todo exists
-        if (!existingTodo) {
+        // Check if todo was found and deleted
+        if (!deletedTodo) {
             return res.status(404).json({
                 success: false,
-                message: 'Todo not found',
+                message: 'Todo not found or access denied',
             });
         }
-
-        // Delete todo
-        await todo.findByIdAndDelete(todoId);
 
         // Success response
         return res.status(200).json({
