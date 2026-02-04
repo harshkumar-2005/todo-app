@@ -18,9 +18,21 @@ connect(mongoUrl);
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173", //  React app
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        // Allow localhost with any port (for development)
+        if (origin.match(/^http:\/\/localhost:\d+$/)) return callback(null, true);
+
+        // Allow specific origins
+        const allowedOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use(express.urlencoded({ extended: true }));
