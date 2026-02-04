@@ -1,22 +1,15 @@
 import Todo from '../models/todo.js';
-import mongoose from 'mongoose';
 
 const createTodo = async (req, res) => {
-    const { title, description, userId } = req.body;
+    const { title, description } = req.body;
+    const { userId } = req.user;
 
     try {
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid User ID'
-            });
-        }
-
         // Validate required fields
-        if (!title || !userId) {
+        if (!title) {
             return res.status(400).json({
                 success: false,
-                message: 'Title and User ID are required'
+                message: 'Title is required'
             });
         }
 
@@ -24,7 +17,7 @@ const createTodo = async (req, res) => {
         const todo = await Todo.create({
             title,
             description,
-            user: userId, // correct field mapping
+            user: userId, // Use authenticated user's ID
         });
 
         // Success response
